@@ -15,15 +15,37 @@ import mfaRoutes from "./modules/mfa/mfa.routes";
 
 const app = express();
 const BASE_PATH = config.BASE_PATH;
+const allowedOrigins = config.APP_ORIGIN;
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: config.APP_ORIGIN,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     credentials: true,
   })
 );
+
+console.log("CORS allowed origin:", config.APP_ORIGIN);
+
+app.options("*", cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));
+
 
 app.use(cookieParser());
 app.use(passport.initialize());

@@ -34,7 +34,32 @@ export default function Login() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+  
+      // Handle login success
+      console.log("Login successful", data);
+    } catch (error: any) {
+      console.error("Login error:", error);
+  
+      // alert
+      alert(error.message || "Something went wrong");
+    }
+  };
+  
 
   return (
     <main className="w-full min-h-[590px] h-auto max-w-full pt-10">

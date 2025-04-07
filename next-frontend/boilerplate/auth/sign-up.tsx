@@ -40,7 +40,30 @@ export default function SignUp() {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {};
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      const res = await fetch("https://advanced-mern-auth-k2id.onrender.com/api/v1/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include", 
+        body: JSON.stringify(values),
+      });
+  
+      const data = await res.json();
+  
+      if (!res.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
+      console.log("Signup successful", data);
+      // setIsSubmited(true); // uncomment if you want the success screen
+    } catch (error: any) {
+      console.error("Signup error:", error.message);
+    }
+  };
+  
 
   return (
     <>
