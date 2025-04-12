@@ -16,24 +16,26 @@ import mfaRoutes from "./modules/mfa/mfa.routes";
 const app = express();
 const BASE_PATH = config.BASE_PATH;
 
-// Ensure APP_ORIGIN is always an array
-let allowedOrigins: string[] = Array.isArray(config.APP_ORIGIN) ? config.APP_ORIGIN : [config.APP_ORIGIN];
+// Normalize and ensure APP_ORIGIN is always an array with no trailing slash
+let allowedOrigins: string[] = Array.isArray(config.APP_ORIGIN)
+  ? config.APP_ORIGIN.map(origin => origin.replace(/\/$/, ""))
+  : [config.APP_ORIGIN];
 
 console.log("Allowed Origins:", allowedOrigins);
 
 const corsOptions: CorsOptions = {
   origin: (origin: string | undefined, callback: (error: Error | null, success: boolean) => void) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true); // Allow the origin if it's in the list
+    if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
+      callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"), false); // Deny if the origin is not allowed
+      callback(new Error("Not allowed by CORS"), false);
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include all methods that you need to support
-  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Ensure these headers are included
-  credentials: true,  // Allows cookies to be sent with requests
-  preflightContinue: false,  // Don't pass the request to the next handler, handled by CORS
-  optionsSuccessStatus: 200,  // Handle old browsers that may not accept 204 status for preflight
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 200,
 };
 
 // Apply CORS middleware
@@ -41,15 +43,15 @@ app.use(cors(corsOptions));
 
 // Handle OPTIONS preflight requests
 app.options('*', cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin.replace(/\/$/, ""))) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
   credentials: true,
-}));  // Global OPTIONS handling
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -57,14 +59,9 @@ app.use(cookieParser());
 app.use(passport.initialize());
 
 // Sample route for testing
-app.get(
-  "/",
-  asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
-    res.status(HTTPSTATUS.OK).json({
-      message: "Hello World!!!",
-    });
-  })
-);
+app.get("/", asyncHandler(async (req: Request, res: Response) => {
+  res.status(HTTPSTATUS.OK).json({ message: "Hello World!!!" });
+}));
 
 // Register routes
 app.use(`${BASE_PATH}/auth`, authRoutes);

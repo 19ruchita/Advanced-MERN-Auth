@@ -47,10 +47,10 @@ export class AuthController {
         ...req.body,
         userAgent,
       });
-
+  
       const { user, accessToken, refreshToken, mfaRequired } =
         await this.authService.login(body);
-
+  
       if (mfaRequired) {
         return res.status(HTTPSTATUS.OK).json({
           message: "Verify MFA authentication",
@@ -58,18 +58,15 @@ export class AuthController {
           user,
         });
       }
-
-      return setAuthenticationCookies({
-        res,
-        accessToken,
-        refreshToken,
-      })
-        .status(HTTPSTATUS.OK)
-        .json({
-          message: "User login successfully",
-          mfaRequired,
-          user,
-        });
+  
+      res.cookie("accessToken", accessToken, getAccessTokenCookieOptions());
+      res.cookie("refreshToken", refreshToken, getRefreshTokenCookieOptions());
+  
+      return res.status(HTTPSTATUS.OK).json({
+        message: "User login successfully",
+        mfaRequired,
+        user,
+      });
     }
   );
 
