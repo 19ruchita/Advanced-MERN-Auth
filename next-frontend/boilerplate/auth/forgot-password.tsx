@@ -17,7 +17,8 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 
 export default function ForgotPassword() {
-  const [isSubmitted] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
 
   const formSchema = z.object({
     email: z.string().trim().email().min(1, {
