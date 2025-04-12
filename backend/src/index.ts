@@ -13,31 +13,34 @@ import sessionRoutes from "./modules/session/session.routes";
 import { authenticateJWT } from "./common/strategies/jwt.strategy";
 import mfaRoutes from "./modules/mfa/mfa.routes";
 
-
 const app = express();
 const BASE_PATH = config.BASE_PATH;
 
-
-let allowedOrigins: string[] = config.APP_ORIGIN;
+// Ensure APP_ORIGIN is always an array
+let allowedOrigins: string[] = Array.isArray(config.APP_ORIGIN) ? config.APP_ORIGIN : [config.APP_ORIGIN];
 
 console.log("Allowed Origins:", allowedOrigins);
 
 const corsOptions: CorsOptions = {
   origin: (origin: string | undefined, callback: (error: Error | null, success: boolean) => void) => {
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+      callback(null, true); // Allow the origin if it's in the list
     } else {
-      callback(new Error("Not allowed by CORS"), false);
+      callback(new Error("Not allowed by CORS"), false); // Deny if the origin is not allowed
     }
   },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add other methods if needed
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Include all methods that you need to support
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'], // Ensure these headers are included
+  credentials: true,  // Allows cookies to be sent with requests
+  preflightContinue: false,  // Don't pass the request to the next handler, handled by CORS
+  optionsSuccessStatus: 200,  // Handle old browsers that may not accept 204 status for preflight
 };
- 
+
+// Apply CORS middleware
 app.use(cors(corsOptions));
 
-// Add OPTIONS request handling for preflight requests
-app.options("*", cors(corsOptions));
+// Handle OPTIONS preflight requests
+app.options("*", cors(corsOptions));  // Global OPTIONS handling
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
