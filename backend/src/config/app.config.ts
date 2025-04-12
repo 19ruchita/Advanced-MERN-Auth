@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const appConfig = () => {
-  const appOrigin = getEnv("APP_ORIGIN", "http://localhost:3000");
+  const appOrigin = getEnv("APP_ORIGIN");
 
   // Ensure APP_ORIGIN is a string and handle possible issues
   const allowedOrigins: string[] = typeof appOrigin === "string"
