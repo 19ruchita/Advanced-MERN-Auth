@@ -18,9 +18,7 @@ const app = express();
 const BASE_PATH = config.BASE_PATH;
 
 
-
-const allowedOrigins: string[] = config.APP_ORIGIN;
-
+let allowedOrigins: string[] = config.APP_ORIGIN;
 
 console.log("Allowed Origins:", allowedOrigins);
 
@@ -33,9 +31,9 @@ const corsOptions: CorsOptions = {
     }
   },
   credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Add other methods if needed
 };
-
-// Apply CORS middleware with options
+ 
 app.use(cors(corsOptions));
 
 // Add OPTIONS request handling for preflight requests
