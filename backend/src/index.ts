@@ -1,5 +1,5 @@
 import "dotenv/config";
-import cors from "cors";
+import cors, { CorsOptions } from "cors";
 import express, { NextFunction, Request, Response } from "express";
 import cookieParser from "cookie-parser";
 import { config } from "./config/app.config";
@@ -15,41 +15,41 @@ import mfaRoutes from "./modules/mfa/mfa.routes";
 
 const app = express();
 const BASE_PATH = config.BASE_PATH;
-const allowedOrigins = config.APP_ORIGIN;
+
+// Initialize allowedOrigins as an empty array
+let allowedOrigins: string[] = config.APP_ORIGIN;
+
+if (!allowedOrigins.length) {
+  console.warn("APP_ORIGIN is not set in environment variables.");
+  allowedOrigins = ["*"]; // Fallback
+}
 
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(
-  cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
-  })
-);
+console.log("Allowed Origins:", allowedOrigins);
 
-console.log("CORS allowed origin:", config.APP_ORIGIN);
-
-app.options("*", cors({
-  origin: (origin, callback) => {
+const corsOptions: CorsOptions = {
+  origin: (origin: string | undefined, callback: (error: Error | null, success: boolean) => void) => {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      callback(new Error("Not allowed by CORS"), false);
     }
   },
   credentials: true,
-}));
+};
 
+// Apply CORS middleware with options
+app.use(cors(corsOptions));
 
+// Add OPTIONS request handling for preflight requests
+app.options("*", cors(corsOptions));
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(passport.initialize());
 
+// Sample route for testing
 app.get(
   "/",
   asyncHandler(async (req: Request, res: Response, next: NextFunction) => {
@@ -59,14 +59,15 @@ app.get(
   })
 );
 
+// Register routes
 app.use(`${BASE_PATH}/auth`, authRoutes);
-
 app.use(`${BASE_PATH}/mfa`, mfaRoutes);
-
 app.use(`${BASE_PATH}/session`, authenticateJWT, sessionRoutes);
 
+// Error handler middleware
 app.use(errorHandler);
 
+// Start the server and connect to the database
 app.listen(config.PORT, async () => {
   console.log(`Server listening on port ${config.PORT} in ${config.NODE_ENV}`);
   await connectDatabase();
