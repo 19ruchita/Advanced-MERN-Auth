@@ -1,0 +1,26 @@
+2025-04-12 15:21:19 [INFO]: Login attempt for email: dr.kirtiraje@gmail.com
+2025-04-12 15:21:19 [INFO]: Creating session for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:21:19 [INFO]: Signing tokens for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:21:19 [INFO]: Login successful for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:21:22 [INFO]: Login attempt for email: dr.kirtiraje@gmail.com
+2025-04-12 15:21:22 [INFO]: Creating session for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:21:22 [INFO]: Signing tokens for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:21:22 [INFO]: Login successful for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:21:43 [INFO]: Login attempt for email: ruchita05raje@gmail.com
+2025-04-12 15:21:43 [INFO]: Creating session for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:21:43 [INFO]: Signing tokens for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:21:43 [INFO]: Login successful for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:22:01 [INFO]: Login attempt for email: ruchita05raje@gmail.com
+2025-04-12 15:22:01 [INFO]: Creating session for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:22:01 [INFO]: Signing tokens for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:22:01 [INFO]: Login successful for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:23:50 [INFO]: Login attempt for email: dr.kirtiraje@gmail.com
+2025-04-12 15:23:51 [INFO]: Creating session for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:23:51 [INFO]: Signing tokens for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:23:51 [INFO]: Login successful for user ID: 67fa36e78d8c6e5075676943
+2025-04-12 15:26:00 [INFO]: Login attempt for email: ruchita05raje@gmail.com
+2025-04-12 15:26:00 [WARN]: Login failed: Invalid password for email: ruchita05raje@gmail.com
+2025-04-12 15:26:09 [INFO]: Login attempt for email: ruchita05raje@gmail.com
+2025-04-12 15:26:09 [INFO]: Creating session for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:26:09 [INFO]: Signing tokens for user ID: 67f3b0b9d511ef2f1fb5795e
+2025-04-12 15:26:09 [INFO]: Login successful for user ID: 67f3b0b9d511ef2f1fb5795e
