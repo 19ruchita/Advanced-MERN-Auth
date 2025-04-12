@@ -13,17 +13,13 @@ import sessionRoutes from "./modules/session/session.routes";
 import { authenticateJWT } from "./common/strategies/jwt.strategy";
 import mfaRoutes from "./modules/mfa/mfa.routes";
 
+
 const app = express();
 const BASE_PATH = config.BASE_PATH;
 
-// Initialize allowedOrigins as an empty array
-let allowedOrigins: string[] = [process.env.VERCEL_URL || "https://your-vercel-app.vercel.app"];
 
 
-if (!allowedOrigins.length) {
-  console.warn("APP_ORIGIN is not set in environment variables.");
-  allowedOrigins = ["*"]; // Fallback
-}
+const allowedOrigins: string[] = config.APP_ORIGIN;
 
 
 console.log("Allowed Origins:", allowedOrigins);

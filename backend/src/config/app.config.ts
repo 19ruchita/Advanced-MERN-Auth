@@ -12,7 +12,7 @@ const appConfig = () => {
 
   return {
     NODE_ENV: getEnv("NODE_ENV", "development"),
-    APP_ORIGIN: allowedOrigins, // Now this is correctly typed as a string array
+    APP_ORIGIN: allowedOrigins,  // Use allowedOrigins here
     PORT: getEnv("PORT", "5000"),
     BASE_PATH: getEnv("BASE_PATH", "/api/v1"),
     MONGO_URI: getEnv("MONGO_URI"),
@@ -26,5 +26,6 @@ const appConfig = () => {
     RESEND_API_KEY: getEnv("RESEND_API_KEY"),
   };
 };
+
 
 export const config = appConfig();
