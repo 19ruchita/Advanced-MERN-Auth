@@ -1,4 +1,4 @@
 {
-  "/(auth)/forgot-password/page": "app/(auth)/forgot-password/page.js",
-  "/(auth)/page": "app/(auth)/page.js"
+  "/(auth)/page": "app/(auth)/page.js",
+  "/(auth)/forgot-password/page": "app/(auth)/forgot-password/page.js"
 }
