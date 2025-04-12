@@ -40,7 +40,16 @@ const corsOptions: CorsOptions = {
 app.use(cors(corsOptions));
 
 // Handle OPTIONS preflight requests
-app.options("*", cors(corsOptions));  // Global OPTIONS handling
+app.options('*', cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+}));  // Global OPTIONS handling
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
