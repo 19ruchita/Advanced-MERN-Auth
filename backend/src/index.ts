@@ -17,7 +17,8 @@ const app = express();
 const BASE_PATH = config.BASE_PATH;
 
 // Initialize allowedOrigins as an empty array
-let allowedOrigins: string[] = config.APP_ORIGIN;
+let allowedOrigins: string[] = [process.env.VERCEL_URL || "https://your-vercel-app.vercel.app"];
+
 
 if (!allowedOrigins.length) {
   console.warn("APP_ORIGIN is not set in environment variables.");
