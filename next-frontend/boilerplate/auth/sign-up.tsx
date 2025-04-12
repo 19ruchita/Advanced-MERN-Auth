@@ -42,7 +42,7 @@ export default function SignUp() {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const res = await fetch("https://advanced-mern-auth-k2id.onrender.com/api/v1/auth/register", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
