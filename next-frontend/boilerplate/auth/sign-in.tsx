@@ -1,6 +1,7 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { z } from "zod";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import Logo from "@/components/logo";
 
 export default function Login() {
+  const router = useRouter();
   const formSchema = z.object({
     email: z.string().trim().email().min(1, {
       message: "Email is required",
@@ -52,6 +54,7 @@ export default function Login() {
   
       // Handle login success
       console.log("Login successful", data);
+      router.push("/");
     } catch (error: any) {
       console.error("Login error:", error);
   
@@ -105,7 +108,7 @@ export default function Login() {
                       Password
                     </FormLabel>
                     <FormControl>
-                      <Input placeholder="••••••••••••" {...field} />
+                      <Input placeholder="••••••••••" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
