@@ -37,6 +37,7 @@ export default function Login() {
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    console.log("Sending login request...");
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, {
         method: "POST",
@@ -54,7 +55,9 @@ export default function Login() {
   
       // Handle login success
       console.log("Login successful", data);
-      router.push("/");
+      setTimeout(() => {
+      router.replace("/");
+     }, 200);
     } catch (error: any) {
       console.error("Login error:", error);
   
